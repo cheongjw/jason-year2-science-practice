@@ -24,6 +24,9 @@
   .mark.bad { color:var(--bad); }
   button { font:inherit; border:0; border-radius:12px; padding:14px 18px; background:var(--btn); color:#fff; width:100%; }
   button.ghost { background:#fff; color:var(--btn); border:1px solid var(--btn); margin-top:8px; }
+  nav { display:flex; gap:8px; margin:0 0 14px; }
+  nav button { width:auto; flex:1; background:#fff; color:var(--btn); border:1px solid var(--btn); }
+  nav button.on { background:var(--btn); color:#fff; }
   #score { background:#fff; border-radius:14px; padding:16px; margin-bottom:14px; border:1px solid var(--line); }
   #score strong { font-size:1.6rem; }
   .hide { display:none; }
@@ -35,13 +38,56 @@
   <p>第5–9课：植物、光和暗、电、混合物、地球。做完按「看成绩」。</p>
 </header>
 <main>
+  <nav>
+    <button type="button" id="set1" class="on">练习一</button>
+    <button type="button" id="set2">练习二</button>
+  </nav>
   <form id="quiz"></form>
   <div id="score" class="hide"></div>
   <button id="check" type="button">看成绩</button>
   <button id="again" class="ghost hide" type="button">再做一次</button>
 </main>
 <script>
-const questions = [
+const sets = {
+  "练习一": [
+    { topic:"植物", prompt:"植物供给人类和动物，最重要的是什么？", options:["玩具","氧气","车子","衣服"], answer:[1] },
+    { topic:"植物", prompt:"绿豆种子发芽，一定需要哪一组？", options:["水、空气、适宜温度","油、冰块、阳光","肥料、月亮、布","盐、沙、磁铁"], answer:[0] },
+    { topic:"植物", prompt:"幼苗渐渐长大时，哪一项是对的？", options:["植株变高，叶子变大，茎变粗","叶子变少，茎变细","不再需要水","立刻结果，没有叶子"], answer:[0] },
+    { topic:"植物", prompt:"植物长大时，除了水、空气和适宜温度，还需要什么？", options:["油","阳光","磁铁","筛子"], answer:[1] },
+    { topic:"光", prompt:"下列哪一项会自己发光，是光源？", options:["月亮","镜子","蜡烛","水面"], answer:[2] },
+    { topic:"光", prompt:"什么情况下会产生影子？", options:["周围完全没有光","光被物体挡住","物体是完全透明的","只有水，没有光"], answer:[1] },
+    { topic:"光", prompt:"手电筒照着一枚硬币，屏幕上的影子多半怎样？", options:["清楚","完全没有","跟硬币形状无关","一定是彩色的"], answer:[0] },
+    { topic:"光", prompt:"哪一种材料让一部分光透过，影子比较模糊？", options:["木板","硬币","毛玻璃","铁片"], answer:[2] },
+    { topic:"电", prompt:"一个完整电路，通常要有电池、电线、灯泡和什么？", options:["开关","磁铁","筛子","滤纸"], answer:[0] },
+    { topic:"电", prompt:"灯泡不亮。哪一项最可能是原因？", options:["电线是红色的","电池没电了","桌子是木头做的","房间有窗户"], answer:[1] },
+    { topic:"电", prompt:"哪一项是电的绝缘体，电流不容易通过？", options:["铁钉","铜线","橡皮","盐水"], answer:[2] },
+    { topic:"混合物", prompt:"要用磁铁分开混合物，哪一组最合适？", options:["铁钉和沙","绿豆和红豆","盐和糖","茶叶和盐"], answer:[0] },
+    { topic:"混合物", prompt:"放进水里搅拌后，哪一种通常还看得到颗粒？", options:["砂糖","食盐","沙子","蜂蜜"], answer:[2] },
+    { topic:"混合物", prompt:"想让方糖更快溶解，哪一种做法对？", options:["把水加热，再搅拌","加进冰块","完全不搅拌","改放进食用油里"], answer:[0] },
+    { topic:"混合物", prompt:"豆子混在奶粉里，最适合用什么分开？", options:["蒸发","筛子","磁铁","滤纸"], answer:[1] },
+    { topic:"地球", prompt:"海水不适合直接喝，主要因为海水怎样？", options:["是咸的","不会流动","没有颜色","一定是热的"], answer:[0] },
+    { topic:"地球", prompt:"水循环比较正确的次序是？", options:["水 → 水蒸气 → 云 → 雨","云 → 水 → 雨 → 水蒸气","雨 → 水蒸气 → 水 → 云","水蒸气 → 雨 → 水 → 云"], answer:[0] },
+    { topic:"地球", prompt:"水沟堵住、水排不走，可能带来什么问题？", options:["衣服干得更快","容易又臭又生蚊子","风变小","种子一定发芽"], answer:[1] },
+    { topic:"地球", prompt:"风是什么？", options:["不动的水","流动的空气","一种光源","一种肥料"], answer:[1] },
+    { topic:"地球", prompt:"鱼能在水里生存，主要是因为？", options:["水里完全没有空气","水的空隙里有空气","鱼不需要呼吸","水就是氧气"], answer:[1] },
+    { topic:"光", prompt:"木板挡住光，影子通常怎样？", options:["清楚，因为光透不过去","很模糊","完全没有"], answer:[0] },
+    { topic:"光", prompt:"描图纸挡住光，影子通常怎样？", options:["和木板一样清楚","比较模糊，因为只让一部分光透过","一定没有影子"], answer:[1] },
+    { topic:"光", prompt:"透明塑料片挡住光，影子通常怎样？", options:["很清楚","很淡，或几乎没有","跟陶瓷杯一样"], answer:[1] },
+    { topic:"光", prompt:"影子的形状，通常像什么？", options:["挡住光的物体","手电筒本身","屏幕的颜色"], answer:[0] },
+    { topic:"电", prompt:"一个完整电路有哪四样？可以选多于一个。", multi:true, options:["电池","电线","灯泡","开关","筛子"], answer:[0,1,2,3] },
+    { topic:"电", prompt:"哪两样能让电流通过？可以选多于一个。", multi:true, options:["铁匙","木板","盐水","布"], answer:[0,2] },
+    { topic:"电", prompt:"开关没有按下，灯泡会怎样？", options:["会亮","不会亮，因为电路没有接通","会更亮"], answer:[1] },
+    { topic:"混合物", prompt:"沙混在水里，最适合用什么分开？", options:["滤纸","磁铁","用手捡盐"], answer:[0], why:"沙留在滤纸上，水透过去。磁铁吸不到沙。" },
+    { topic:"混合物", prompt:"盐水晒干后，可以得到什么？", options:["沙","盐","糖"], answer:[1] },
+    { topic:"混合物", prompt:"树叶和石头放进水里，哪一个会浮起来？", options:["树叶","石头","两个都沉下去"], answer:[0] },
+    { topic:"地球", prompt:"水被晒热后先变成什么？", options:["云","水蒸气","雨"], answer:[1] },
+    { topic:"地球", prompt:"小水滴聚在一起，变成什么才下雨？", options:["云","盐","风"], answer:[0] },
+    { topic:"地球", prompt:"狂风可能造成哪一件事？", options:["吹倒树或损坏农作物","让糖溶得更快","让月亮自己发光"], answer:[0] }
+  ],
+  "练习二": null
+};
+
+sets["练习二"] = [
   { topic:"溶解", prompt:"两杯水放进同样多的糖，用同样的速度搅拌。哪一杯溶得比较快？", options:["冷水那一杯","热水那一杯","两杯一样快"], answer:[1] },
   { topic:"溶解", prompt:"上面这个实验里，影响糖溶解快慢的是水的什么？", options:["颜色","温度","杯子的价钱"], answer:[1] },
   { topic:"溶解", prompt:"哪些做法会让物质溶得更快？可以选多于一个。", multi:true, options:["搅拌","把物质弄碎","看物质贵不贵"], answer:[0,1] },
@@ -68,17 +114,22 @@ const questions = [
   { topic:"植物", prompt:"种子发芽一定需要哪一组？", options:["水、空气、适宜温度","油、冰块、阳光","盐、沙、磁铁"], answer:[0] }
 ];
 
+let current = "练习一";
 const form = document.getElementById("quiz");
 const scoreBox = document.getElementById("score");
 const checkBtn = document.getElementById("check");
 const againBtn = document.getElementById("again");
+
+function questions() { return sets[current]; }
 
 function render() {
   form.innerHTML = "";
   scoreBox.classList.add("hide");
   againBtn.classList.add("hide");
   checkBtn.classList.remove("hide");
-  questions.forEach((q, i) => {
+  document.getElementById("set1").classList.toggle("on", current === "练习一");
+  document.getElementById("set2").classList.toggle("on", current === "练习二");
+  questions().forEach((q, i) => {
     const box = document.createElement("section");
     box.className = "q";
     box.dataset.i = i;
@@ -100,7 +151,8 @@ function same(a, b) {
 
 checkBtn.onclick = () => {
   let ok = 0;
-  questions.forEach((q, i) => {
+  const list = questions();
+  list.forEach((q, i) => {
     const box = form.querySelector(`[data-i="${i}"]`);
     const got = chosen(i);
     const right = same(got, q.answer);
@@ -113,11 +165,14 @@ checkBtn.onclick = () => {
     mark.textContent = right ? "对" : `错。正确答案：${ans}${q.why ? " " + q.why : ""}`;
   });
   scoreBox.classList.remove("hide");
-  scoreBox.innerHTML = `<strong>${ok} / ${questions.length}</strong><p>${ok === questions.length ? "全部对了。" : "红色是错的，看一下正确答案。"}</p>`;
+  scoreBox.innerHTML = `<strong>${ok} / ${list.length}</strong><p>${ok === list.length ? "全部对了。" : "红色是错的，看一下正确答案。"}</p>`;
   scoreBox.scrollIntoView({behavior:"smooth"});
   againBtn.classList.remove("hide");
 };
 
+function pick(name) { current = name; render(); window.scrollTo({top:0, behavior:"smooth"}); }
+document.getElementById("set1").onclick = () => pick("练习一");
+document.getElementById("set2").onclick = () => pick("练习二");
 againBtn.onclick = () => { render(); window.scrollTo({top:0, behavior:"smooth"}); };
 render();
 </script>
