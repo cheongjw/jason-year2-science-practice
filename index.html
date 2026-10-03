@@ -39,7 +39,8 @@
 </header>
 <main>
   <nav>
-    <button type="button" id="set1" class="on">练习一</button>
+    <button type="button" id="set50" class="on">50题</button>
+    <button type="button" id="set1">练习一</button>
     <button type="button" id="set2">练习二</button>
   </nav>
   <form id="quiz"></form>
@@ -114,7 +115,70 @@ sets["练习二"] = [
   { topic:"植物", prompt:"种子发芽一定需要哪一组？", options:["水、空气、适宜温度","油、冰块、阳光","盐、沙、磁铁"], answer:[0] }
 ];
 
-let current = "练习一";
+sets["50题"] = [
+  { topic:"植物", prompt:"植物供给人类和动物，最重要的是什么？", options:["氧气","车子","玩具"], answer:[0] },
+  { topic:"植物", prompt:"人类用的草药，主要来自哪里？", options:["石头","植物","铁钉"], answer:[1] },
+  { topic:"植物", prompt:"植物还可以帮到动物的哪一件事？", options:["给一些动物做庇护所","让月亮发光","把海水变淡"], answer:[0] },
+  { topic:"植物", prompt:"种子发芽的基本需求是哪一组？", options:["水、空气、适中的温度","油、冰块、肥料","盐、沙、磁铁"], answer:[0] },
+  { topic:"植物", prompt:"绿豆放在干棉花上，为什么不容易发芽？", options:["缺少水","阳光太强","棉花太白"], answer:[0] },
+  { topic:"植物", prompt:"湿棉花上加了一层油，绿豆不容易发芽。主要是因为什么？", options:["空气不容易进去","温度一定太高","油是甜的"], answer:[0] },
+  { topic:"植物", prompt:"湿棉花放进冰箱，绿豆不容易发芽。主要是因为什么？", options:["温度太低","水太多","有阳光"], answer:[0] },
+  { topic:"植物", prompt:"幼苗慢慢长大时，哪一项是对的？", options:["长高，叶子更多更大，茎变粗","叶子变少，茎变细","不再需要水"], answer:[0] },
+  { topic:"植物", prompt:"课本里的生长顺序，哪一个对？", options:["种子 → 发芽 → 幼苗 → 开花 → 结果","结果 → 种子 → 开花 → 幼苗","幼苗 → 种子 → 发芽 → 开花"], answer:[0] },
+  { topic:"植物", prompt:"正在生长的植物，还需要什么？", options:["水、空气和阳光","只需要油","只需要磁铁"], answer:[0] },
+  { topic:"植物", prompt:"养料对植物有什么用？", options:["让植物长得更茁壮","让植物变成光源","让影子变彩色"], answer:[0] },
+  { topic:"植物", prompt:"养料可以来自哪里？", options:["泥土或肥料","月亮","电线"], answer:[0] },
+  { topic:"植物", prompt:"植物长时间缺水，可能造成什么？", options:["粮食短缺","风变小","影子消失"], answer:[0] },
+  { topic:"植物", prompt:"哪些是植物给我们的食物？可以选多于一个。", multi:true, options:["蔬菜","水果","铁钉"], answer:[0,1] },
+  { topic:"光", prompt:"能发光的物体叫做什么？", options:["光源","绝缘体","溶质"], answer:[0] },
+  { topic:"光", prompt:"下列哪一项是光源？", options:["路灯","月亮","镜子"], answer:[0] },
+  { topic:"光", prompt:"月亮为什么不是光源？", options:["它不会自己发光","它太圆","它在晚上出现"], answer:[0] },
+  { topic:"光", prompt:"光对我们有什么帮助？", options:["让周围变亮，我们能看见物体","让盐溶解","让水从低处往高处流"], answer:[0] },
+  { topic:"光", prompt:"在光亮的地方做事，通常怎样？", options:["比较容易进行活动","一定做不到","影子会消失"], answer:[0] },
+  { topic:"光", prompt:"影子是怎样形成的？", options:["光被物体挡住","物体自己发光","水被晒热"], answer:[0] },
+  { topic:"光", prompt:"影子的形状通常怎样？", options:["和挡住光的物体一样","和手电筒一样","一定是圆的"], answer:[0] },
+  { topic:"光", prompt:"纸板或硬币挡住光，影子多半怎样？", options:["清楚","很模糊","完全没有"], answer:[0] },
+  { topic:"光", prompt:"描图纸或毛玻璃挡住光，影子多半怎样？", options:["模糊，因为只让一部分光透过","和铁板一样清楚","一定是彩色的"], answer:[0] },
+  { topic:"光", prompt:"透明胶片或烧杯挡住光，影子多半怎样？", options:["很淡，或几乎没有","非常清楚","跟砖头一样"], answer:[0] },
+  { topic:"光", prompt:"储藏室没有灯，怎样才能看见里面的东西？", options:["用手电筒或蜡烛","用镜子当光源","把灯关掉"], answer:[0] },
+  { topic:"电", prompt:"完整电路要有哪些？可以选多于一个。", multi:true, options:["干电池","开关","灯泡","电线","筛子"], answer:[0,1,2,3] },
+  { topic:"电", prompt:"干电池在电路里做什么？", options:["提供电流","发出光亮","挡住光"], answer:[0] },
+  { topic:"电", prompt:"开关在电路里做什么？", options:["接通或截断电路","提供食物","让糖溶解"], answer:[0] },
+  { topic:"电", prompt:"灯泡在电路里做什么？", options:["发出光亮","提供电流","分开混合物"], answer:[0] },
+  { topic:"电", prompt:"开关没有按下，灯泡会怎样？", options:["不会亮","会更亮","会自己变成磁铁"], answer:[0] },
+  { topic:"电", prompt:"哪一种情况会让灯泡不亮？", options:["干电池的电用完了","电线是红色的","桌子是木头的"], answer:[0] },
+  { topic:"电", prompt:"灯丝烧坏了，灯泡会怎样？", options:["不会亮","会更亮","会溶解"], answer:[0] },
+  { topic:"电", prompt:"干电池装反了，灯泡多半会怎样？", options:["不会亮","一定更亮","变成绝缘体"], answer:[0] },
+  { topic:"电", prompt:"哪一项是电导体，能让电流通过？", options:["回形针","橡皮","木尺"], answer:[0] },
+  { topic:"电", prompt:"盐水放进电路测试，灯泡会怎样？", options:["会亮，因为盐水能导电","一定不亮","会结冰"], answer:[0] },
+  { topic:"电", prompt:"哪一项是绝缘体，电流不容易通过？", options:["橡皮","铁钥匙","钢尺"], answer:[0] },
+  { topic:"电", prompt:"铅笔芯放进电路，课本里的结果是什么？", options:["能导电，灯泡会亮","一定是绝缘体","会挡住所有的光"], answer:[0] },
+  { topic:"电", prompt:"食油是导体还是绝缘体？", options:["绝缘体，灯泡不会亮","导体，灯泡会亮","光源"], answer:[0] },
+  { topic:"混合物", prompt:"沙里有铁钉，最好用什么分开？", options:["磁铁","蒸发","滤纸"], answer:[0] },
+  { topic:"混合物", prompt:"树叶和石头放进水里，会怎样？", options:["树叶浮起来，石头沉下去","两个都浮起来","两个都溶解"], answer:[0] },
+  { topic:"混合物", prompt:"豆子混在奶粉里，最好用什么分开？", options:["筛子","磁铁","蒸发"], answer:[0] },
+  { topic:"混合物", prompt:"沙混在水里，最好用什么分开？", options:["滤纸","磁铁","用手捡沙粒当盐"], answer:[0] },
+  { topic:"混合物", prompt:"盐水放在阳光下晒干，可以得到什么？", options:["盐","沙","铁钉"], answer:[0] },
+  { topic:"混合物", prompt:"哪一种放进水里搅拌后，通常还看得到颗粒？", options:["咖喱粉","砂糖","食盐"], answer:[0] },
+  { topic:"混合物", prompt:"哪一种会溶解在水里？", options:["蜂蜜","沙子","茶叶"], answer:[0] },
+  { topic:"混合物", prompt:"怎样让方糖溶得更快？可以选多于一个。", multi:true, options:["弄碎","搅拌","把水加热","改放进油里"], answer:[0,1,2] },
+  { topic:"地球", prompt:"哪些是天然水源？可以选多于一个。", multi:true, options:["海","河流","湖泊","雨","泉眼","水井"], answer:[0,1,2,3,4], why:"水井是人挖的，不是天然水源。" },
+  { topic:"地球", prompt:"海水为什么不适合直接喝？", options:["海水是咸的","海水不会流动","海水没有颜色"], answer:[0] },
+  { topic:"地球", prompt:"水在自然状态下怎样流？", options:["从高处往低处流","从低处往高处流","不会流动"], answer:[0] },
+  { topic:"地球", prompt:"水循环里，水受热后先变成什么？", options:["水蒸气","云","盐"], answer:[0] },
+  { topic:"地球", prompt:"水蒸气在空中受冷，会变成什么？", options:["小水滴","铁钉","肥料"], answer:[0] },
+  { topic:"地球", prompt:"许多小水滴聚在一起，形成什么？", options:["云","风","影子"], answer:[0] },
+  { topic:"地球", prompt:"雨落下以后，会流到哪里？可以选多于一个。", multi:true, options:["河流","大海","干电池"], answer:[0,1] },
+  { topic:"地球", prompt:"水一直循环，有什么好处？", options:["水不容易用完","月亮会自己发光","影子一定清楚"], answer:[0] },
+  { topic:"地球", prompt:"水沟堵住、水流不走，可能发生什么？可以选多于一个。", multi:true, options:["容易水灾","水变臭","滋生蚊子","风立刻停止"], answer:[0,1,2] },
+  { topic:"地球", prompt:"生物为什么需要空气？", options:["用来呼吸","用来当食物里的盐","用来挡住所有的光"], answer:[0] },
+  { topic:"地球", prompt:"空气还可能在哪里？", options:["泥土和水的空隙里","只在电池里","只在影子里"], answer:[0] },
+  { topic:"地球", prompt:"空气里有哪些气体？课本写了哪一组？", options:["氧气和二氧化碳等","只有水","只有盐"], answer:[0] },
+  { topic:"地球", prompt:"风是什么？", options:["流动的空气","不动的水","一种光源"], answer:[0] },
+  { topic:"地球", prompt:"风可以帮助我们做什么？可以选多于一个。", multi:true, options:["晒衣服","让人觉得凉快","推动帆船","让种子不需要水"], answer:[0,1,2] }
+];
+
+let current = "50题";
 const form = document.getElementById("quiz");
 const scoreBox = document.getElementById("score");
 const checkBtn = document.getElementById("check");
@@ -127,6 +191,7 @@ function render() {
   scoreBox.classList.add("hide");
   againBtn.classList.add("hide");
   checkBtn.classList.remove("hide");
+  document.getElementById("set50").classList.toggle("on", current === "50题");
   document.getElementById("set1").classList.toggle("on", current === "练习一");
   document.getElementById("set2").classList.toggle("on", current === "练习二");
   questions().forEach((q, i) => {
@@ -171,6 +236,7 @@ checkBtn.onclick = () => {
 };
 
 function pick(name) { current = name; render(); window.scrollTo({top:0, behavior:"smooth"}); }
+document.getElementById("set50").onclick = () => pick("50题");
 document.getElementById("set1").onclick = () => pick("练习一");
 document.getElementById("set2").onclick = () => pick("练习二");
 againBtn.onclick = () => { render(); window.scrollTo({top:0, behavior:"smooth"}); };
